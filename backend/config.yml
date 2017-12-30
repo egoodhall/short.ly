@@ -1,0 +1,11 @@
+server:
+  applicationConnectors:
+  - type: http
+    port: 3742
+  adminConnectors:
+  - type: http
+    port: 3743
+logging:
+  level: INFO
+  loggers:
+    com.example: DEBUG
