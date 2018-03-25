@@ -1,4 +1,4 @@
-package com.example;
+package com.marshall.eric;
 
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;

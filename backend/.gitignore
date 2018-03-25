@@ -37,6 +37,11 @@ cmake-build-debug/
 # IntelliJ
 /out/
 
+# Static assets
+src/main/resources/assets/
+
+**/*.log
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 

@@ -1,11 +1,11 @@
 server:
-  applicationConnectors:
-  - type: http
-    port: 3742
-  adminConnectors:
-  - type: http
-    port: 3743
+  type: simple
+  applicationContextPath: /
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 8080
 logging:
   level: INFO
   loggers:
-    com.example: DEBUG
+    com.marshall.eric: DEBUG

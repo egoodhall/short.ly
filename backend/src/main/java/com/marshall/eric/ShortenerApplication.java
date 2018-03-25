@@ -1,9 +1,10 @@
-package com.example;
+package com.marshall.eric;
 
-import com.example.health.FollowHealthCheck;
-import com.example.resources.FollowUrlResource;
-import com.example.resources.ShortenUrlResource;
+import com.marshall.eric.health.FollowHealthCheck;
+import com.marshall.eric.resources.FollowUrlResource;
+import com.marshall.eric.resources.ShortenUrlResource;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -19,7 +20,7 @@ public class ShortenerApplication extends Application<ShortenerConfiguration> {
 
     @Override
     public void initialize(Bootstrap<ShortenerConfiguration> bootstrap) {
-        // nothing to do yet
+
     }
 
     @Override

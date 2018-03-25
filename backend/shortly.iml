@@ -98,5 +98,9 @@
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-access:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.argparse4j:argparse4j:0.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty.toolchain.setuid:jetty-setuid-java:1.0.3" level="project" />
+    <orderEntry type="library" name="Maven: io.dropwizard:dropwizard-assets:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:bson:3.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-core:3.6.3" level="project" />
   </component>
 </module>

@@ -1,8 +1,7 @@
-package com.example.resources;
+package com.marshall.eric.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import com.example.core.UrlShortener;
-import org.slf4j.LoggerFactory;
+import com.marshall.eric.core.UrlShortener;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;

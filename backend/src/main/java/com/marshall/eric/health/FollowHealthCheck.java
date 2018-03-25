@@ -1,8 +1,7 @@
-package com.example.health;
+package com.marshall.eric.health;
 
 import com.codahale.metrics.health.HealthCheck;
-import com.example.resources.FollowUrlResource;
-import com.example.resources.ShortenUrlResource;
+import com.marshall.eric.resources.FollowUrlResource;
 
 import javax.ws.rs.core.Response;
 

@@ -1,0 +1,14 @@
+version: '3'
+services:
+  dropwizard:
+    build: ./backend
+    links:
+     - db
+  nginx:
+    build: ./frontend
+    ports:
+     - '8080:80'
+    links:
+     - dropwizard
+  db:
+    build: ./mongodb
