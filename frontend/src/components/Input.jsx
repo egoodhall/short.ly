@@ -29,6 +29,8 @@ export default class InputBar extends Component {
     this.state = {
       value: ''
     };
+
+    this.handleKeyPressed = this.handleKeyPressed.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -41,6 +43,12 @@ export default class InputBar extends Component {
 
   onChange(evt, text) {
     this.setState({ value: text });
+  }
+
+  handleKeyPressed(e) {
+    if (e.charCode === 13) {
+      this.props.onClick();
+    }
   }
 
   onClick() {}
@@ -56,6 +64,7 @@ export default class InputBar extends Component {
             autoFocus={true}
             disableUnderline={true}
             onChange={this.props.onChange || this.onChange}
+            onKeyPress={this.handleKeyPressed}
           />
           <Button color='secondary' onClick={this.props.onClick || this.onClick}>Shorten</Button>
         </div>

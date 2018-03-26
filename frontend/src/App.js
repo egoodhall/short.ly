@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Input from './components/Input.jsx';
 import LinkTable from './components/LinkTable.jsx';
+import SignInButton from './components/SignInButton.jsx';
 
 const getStyles = (state, props) => ({
   app: {
@@ -39,21 +40,33 @@ const getStyles = (state, props) => ({
   }
 });
 
+const validURL = (str) => {
+  var pattern = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+  if (!pattern.test(str)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 class App extends Component {
 
   constructor(props) {
     super(props);
+    const uid = localStorage.getItem('uid');
     this.state = {
       url: '',
-      urlStats: [
-        { shortened: 'http://localhost:8080/3QE5bn', original: 'https://www.youtube.com/watch?v=0CFuCYNx-1g', creationDate: '3/25/2018', clicks: 1 },
-        { shortened: 'http://localhost:8080/4Tzky5', original: 'https://github.com/emm035', creationDate: '3/11/2018', clicks: 5 },
-        { shortened: 'http://localhost:8080/Sz71Wq', original: 'https://www.linkedin.com/in/eric-marshall', creationDate: '2/18/2018', clicks: 17 }
-      ]
+      urlStats: [],
+      uid: uid || undefined
     };
 
     this.onURLChanged = this.onURLChanged.bind(this);
     this.onShortenClicked = this.onShortenClicked.bind(this);
+    this.retrieveLinks = this.retrieveLinks.bind(this);
+
+    if (uid) {
+      this.retrieveLinks(uid);
+    }
   }
 
   onURLChanged({ target: { value: url }}) {
@@ -61,18 +74,59 @@ class App extends Component {
   }
 
   onShortenClicked() {
-    fetch('http://localhost:8080/shorten', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        url: this.state.url
+    if (validURL(this.state.url)) {
+      fetch(`${window.location.href}shorten`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          url: this.state.url,
+          uid: this.state.uid || undefined
+        })
       })
-    })
+      .then(res => res.json())
+      .then((json) => {
+        if (!json.success) {
+          console.log(json);
+          return null;
+        }
+        if (this.state.uid) {
+          this.setState({ url: '' });
+          this.retrieveLinks(this.state.uid);
+        }
+        return json.data;
+      });
+    }
+  }
+
+  retrieveLinks(uid) {
+    
+    fetch(`${window.location.href}links/${uid}`)
     .then(res => res.json())
-    .then(json => console.log(json));
+    .then((json) => {
+      console.log(json);
+      if (!json.success) {
+        console.log(json);
+      }
+      return json.data;
+    })
+    .then((data) => {
+      console.log(data);
+      this.setState({ urlStats: data });
+    });
+  }
+
+  handleSocialLogin(user) {
+    this.setState({ uid: user.profile.id }, () => {
+      this.retrieveLinks(this.state.uid);
+      localStorage.setItem('uid', user.profile.id);
+    });
+  }
+
+  handleSocialLoginFailure(err) {
+    console.error(err);
   }
 
   render() {
@@ -84,7 +138,15 @@ class App extends Component {
           <Input value={this.state.url} onClick={this.onShortenClicked} onChange={this.onURLChanged} barStyle={styles.inputBar}/>
         </div>
         <div style={styles.table}>
-          <LinkTable data={this.state.urlStats} />
+          { this.state.uid && <LinkTable data={this.state.urlStats} /> }
+          { !this.state.uid && <SignInButton
+            style={{ marginTop: 8 }}
+            variant='raised'
+            provider='google'
+            appId='142165402971-2jsroe947omcgessm520ksv4237omp03.apps.googleusercontent.com'
+            onLoginSuccess={(user) => this.handleSocialLogin(user)}
+            onLoginFailure={(err) => this.handleSocialLoginFailure(err)}
+          >Sign in With Google</SignInButton> }
         </div>
       </div>
     );

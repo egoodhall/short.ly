@@ -18,9 +18,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.inc;
 
 public class UrlShortener {
-    static Integer currentPosition = null;
     static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     static SecureRandom rnd = new SecureRandom();
 
@@ -31,17 +31,18 @@ public class UrlShortener {
         return sb.toString();
     }
 
-    public static String shorten(String url, String owner) {
+    public static String shorten(String url, String uid) {
         if (url != null) {
             String key = randomString(6);
-            while (DBClient.mappedURLs.find(eq("shortenedUrl", key)).first() != null) {
+            while (DBClient.mappedURLs.find(eq("mappedUrl", key)).first() != null) {
                 key = randomString(6);
             }
             DBClient.mappedURLs.insertOne(
-                new Document("shortenedUrl", key)
-                    .append("originalUrl", url)
-                    .append("date", System.currentTimeMillis() / 1000L)
-                    .append("owner", owner)
+                new Document("mappedUrl", key)
+                    .append("destUrl", url)
+                    .append("timestamp", System.currentTimeMillis())
+                    .append("uid", uid)
+                    .append("clicks", 0)
             );
             return key;
         }
@@ -49,7 +50,7 @@ public class UrlShortener {
     }
 
     public static String lookup(String path) {
-        Document lookup = (Document) DBClient.mappedURLs.find(eq("shortenedUrl", path)).first();
-        return lookup == null ? null : lookup.getString("originalUrl");
+        Document lookup = (Document) DBClient.mappedURLs.findOneAndUpdate(eq("mappedUrl", path), inc("count", 1));
+        return lookup == null ? null : lookup.getString("destUrl");
     }
 }

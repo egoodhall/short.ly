@@ -3,6 +3,7 @@ import Paper from 'material-ui/Paper/Paper';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import _ from 'lodash';
 import addEllipsis from 'add-ellipsis';
+import moment from 'moment-timezone';
 
 const getStyles = (state, props) => ({
   paper: {
@@ -23,14 +24,14 @@ const getStyles = (state, props) => ({
   }
 });
 
-export default class InputBar extends Component {
+export default class LinkTable extends Component {
 
   mapTableData(data) {
     return _.map(data, (row) => (
       <TableRow>
-        <TableCell><a href={row.shortened}>{row.shortened}</a></TableCell>
-        <TableCell>{row.creationDate}</TableCell>
-        <TableCell><a href={row.original}>{row.original.length > 27 ? addEllipsis(row.original, 27) : row.original}</a></TableCell>
+        <TableCell><a target='_blank' href={`${window.location.href}${row.mappedUrl}`}>{`${window.location.hostname}/${row.mappedUrl}`}</a></TableCell>
+        <TableCell>{ moment.tz(row.timestamp, moment.tz.guess()).format('MMM D, YYYY') }</TableCell>
+        <TableCell><a target='_blank' href={row.destUrl}>{row.destUrl.length > 27 ? addEllipsis(row.destUrl, 27) : row.destUrl}</a></TableCell>
         <TableCell>{row.clicks}</TableCell>
       </TableRow>
     ));
@@ -46,7 +47,7 @@ export default class InputBar extends Component {
             <TableCell>Shortened Link</TableCell>
             <TableCell>Created On</TableCell>
             <TableCell>Original Link</TableCell>
-            <TableCell numeric>Total Clicks</TableCell>
+            <TableCell>Total Clicks</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
