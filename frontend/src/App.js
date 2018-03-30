@@ -65,7 +65,7 @@ class App extends Component {
     this.retrieveLinks = this.retrieveLinks.bind(this);
 
     if (uid) {
-      // this.retrieveLinks(uid);
+      this.retrieveLinks(uid);
     }
   }
 
