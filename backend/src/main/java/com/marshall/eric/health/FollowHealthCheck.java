@@ -14,7 +14,7 @@ public class FollowHealthCheck extends HealthCheck {
 
     @Override
     protected Result check() throws Exception {
-        Response res = resource.follow("FollowHealthCheck");
+        Response res = resource.follow("Dropwizard Health Check","FollowHealthCheck");
         if (res.getStatus() != 404) {
             return Result.unhealthy("template doesn't include a name");
         }

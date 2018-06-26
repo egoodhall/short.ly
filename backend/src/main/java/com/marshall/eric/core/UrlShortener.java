@@ -1,21 +1,9 @@
 package com.marshall.eric.core;
 
-import com.google.common.collect.HashBiMap;
-import com.marshall.eric.client.DBClient;
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.jndi.MongoClientFactory;
+import com.marshall.eric.db.DBClient;
 import org.bson.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.security.SecureRandom;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.inc;
@@ -31,6 +19,11 @@ public class UrlShortener {
         return sb.toString();
     }
 
+    /**
+     * Shorten a URL for the user with the given UID
+     * @param url The URL to shorten
+     * @param uid The UID of the user requesting the shortened URL
+     */
     public static String shorten(String url, String uid) {
         if (url != null) {
             String key = randomString(6);
@@ -49,8 +42,12 @@ public class UrlShortener {
         return null;
     }
 
+    /**
+     * Look up a URL in the database, and return its destination URL
+     * @param path The shortened URL extension to follow
+     */
     public static String lookup(String path) {
-        Document lookup = (Document) DBClient.mappedURLs.findOneAndUpdate(eq("mappedUrl", path), inc("count", 1));
+        Document lookup = (Document) DBClient.mappedURLs.findOneAndUpdate(eq("mappedUrl", path), inc("clicks", 1));
         return lookup == null ? null : lookup.getString("destUrl");
     }
 }

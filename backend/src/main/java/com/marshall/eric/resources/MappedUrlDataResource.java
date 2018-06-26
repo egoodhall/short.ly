@@ -3,7 +3,7 @@ package com.marshall.eric.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.marshall.eric.api.MappedUrlData;
 import com.marshall.eric.api.StatusResponse;
-import com.marshall.eric.client.DBClient;
+import com.marshall.eric.db.DBClient;
 import com.mongodb.client.MongoCursor;
 import org.bson.Document;
 
