@@ -2,9 +2,9 @@ FROM java:8
 
 WORKDIR /
 
-COPY target/shortly.jar shortly.jar
+COPY build/libs/crisco.jar crisco.jar
 COPY config.yml config.yml
 
 EXPOSE 8080
 
-CMD java -jar shortly.jar server config.yml
+CMD java -jar crisco.jar server config.yml

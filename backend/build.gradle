@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
+}
+
+group 'com.marshall.eric'
+version '1.0-SNAPSHOT'
+
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.code.gson:gson:2.8.5'
+    compile 'org.glassfish.jersey.bundles.repackaged:jersey-guava:2.25.1'
+    compile 'org.glassfish.jersey.media:jersey-media-sse:2.25.1'
+
+    compile "io.dropwizard:dropwizard-testing:1.3.4"
+    compile 'io.dropwizard:dropwizard-jersey:1.3.4'
+    compile "io.dropwizard:dropwizard-core:1.3.4"
+    compile 'org.mongodb:mongodb-driver:3.6.3'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+// Build project into a JAR file using "gradle shadowJar"
+shadowJar {
+    mergeServiceFiles()
+    exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
+    manifest {
+        attributes 'Implementation-Title': rootProject.name
+        attributes 'Implementation-Version': rootProject.version
+        attributes 'Implementation-Vendor-Id': rootProject.group
+        attributes 'Build-Time': ZonedDateTime.now(ZoneId.of("UTC"))
+                .format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
+        attributes 'Built-By': InetAddress.localHost.hostName
+        attributes 'Created-By': 'Gradle ' + gradle.gradleVersion
+        attributes 'Main-Class': 'com.marshall.eric.ShortenerApplication'
+    }
+    archiveName 'crisco.jar'
+}

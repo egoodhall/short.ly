@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/shortly.iml" filepath="$PROJECT_DIR$/shortly.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/crisco.iml" filepath="$PROJECT_DIR$/.idea/modules/crisco.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/crisco_main.iml" filepath="$PROJECT_DIR$/.idea/modules/crisco_main.iml" group="crisco" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/crisco_test.iml" filepath="$PROJECT_DIR$/.idea/modules/crisco_test.iml" group="crisco" />
     </modules>
   </component>
 </project>

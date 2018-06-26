@@ -7,14 +7,11 @@ phases:
     task: dockerize
 tasks:
   backend:
-    require:
-      build_tool:
-        opt:
-        - mvn
-        err: Maven is not installed
     run:
-    - cmd: "{build_tool} package"
-      msg: Packaging Java files
+    - cmd: "./gradlew build"
+      msg: Compiling Java
+    - cmd: "./gradlew shadowJar"
+      msg: Building Shadow Jar
     path: backend
     log_file: log/build/backend.log
   dockerize:
@@ -22,11 +19,11 @@ tasks:
       docker_compose:
         opt:
         - docker-compose
-        err: docker-compose is not installed
+        err: docker-compose is not installed (or not in path)
       docker:
         opt:
         - docker
-        err: docker is not installed
+        err: docker is not installed (or not in path)
     run:
     - cmd: "{docker_compose} down"
       msg: Removing existing containers
@@ -43,7 +40,7 @@ tasks:
         opt:
         - yarn
         - npm
-        err: Neither Yarn nor NPM is installed
+        err: Neither Yarn nor NPM is installed (or not in path)
     run:
     - cmd: "{build_tool} build"
       msg: Compiling static JS files

@@ -5,6 +5,8 @@ server:
   connector:
     type: http
     port: 8080
+  gzip:
+    syncFlush: true
 logging:
   level: INFO
   loggers:
